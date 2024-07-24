@@ -4,6 +4,7 @@
 # Include specific folders and files
 !defs.py
 !download.py
+!get_categories.py
 !main.py
 !process.py
 !.gitignore
