@@ -6,6 +6,7 @@
 !download.py
 !get_categories.py
 !main.py
+!pandas_ops.py
 !process.py
 !.gitignore
 !.gitattributes
