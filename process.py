@@ -153,7 +153,15 @@ def get_products_brands_from_one_category_slug(thread_id, category_slug, lock):
             raise KeyError(f"""[THREAD/{thread_id}] No "product" key in payload for {slug}.""")
 
         return products_json
-    #####
+
+    def recursively_extract_parent_categories(inspection_point, parent_category_id_list):
+            if inspection_point.get("parentCategory") is None:
+                return
+
+            parent_category_id_list.append(inspection_point.get("parentCategory").get("id"))
+
+            # im going deeper, leo
+            recursively_extract_parent_categories(inspection_point.get("parentCategory"), parent_category_id_list)
 
     working_page = 1
     while True:
@@ -169,6 +177,8 @@ def get_products_brands_from_one_category_slug(thread_id, category_slug, lock):
         for product in products_json["data"]["product"]:
             product_id = product.get("id")
             brand_id = product.get("brand").get("id")
+            parent_categories_asc = []
+            recursively_extract_parent_categories(product.get("primaryCategory"), parent_categories_asc)
 
             product_info.append({
                 "id": product_id,
@@ -180,6 +190,8 @@ def get_products_brands_from_one_category_slug(thread_id, category_slug, lock):
                 "image_url": product.get("images")[0] if product.get("images") else None,
                 "id_brand": brand_id,
                 "id_category_primary": product.get("primaryCategory").get("id"),
+                "id_category_parent_major": str(parent_categories_asc[1]) if len(parent_categories_asc) == 2 else str(parent_categories_asc[0]),
+                "id_category_parent_minor": str(parent_categories_asc[0]) if len(parent_categories_asc) == 2 else None,
                 "id_category_secondary": ",".join([str(id) for id in product.get("secondaryCategoryIds")]) if product.get("secondaryCategoryIds") else None,
                 "country": product.get("metaData").get("Country of Origin"),
                 # reviews can be null
