@@ -16,31 +16,39 @@ def get_all_categories(category_dict):
             return
 
         for category in inspection_point["subCategories"]:
-            category_info.append({
-                "id": category.get("id"),
-                "name": category.get("name"),
-                "image_url": category.get("image"),
-                "url": category.get("slug")
-            })
-            category_id_list.append(category.get("id"))
+            if category.get("id") not in category_id_list:
+                category_info.append({
+                    "id": category.get("id"),
+                    "name": category.get("name"),
+                    "image_url": category.get("image"),
+                    "url": category.get("slug"),
+                    "created_at": category.get("createdAt"),
+                    "updated_at": category.get("updatedAt"),
+                    "updated_by": category.get("updatedBy")
+                })
+                category_id_list.append(category.get("id"))
 
-            # im going deeper, leo
-            recursively_extract_subcategories(category, category_info, category_id_list)
+                # im going deeper, leo
+                recursively_extract_subcategories(category, category_info, category_id_list)
 
     category_json_all = json.loads(category_dict)
     category_info = []
     category_id_list = []
 
     for category in category_json_all["data"]["category"]:
-        category_info.append({
-            "id": category.get("id"),
-            "name": category.get("name"),
-            "image_url": category.get("image"),
-            "url": category.get("slug")
-        })
-        category_id_list.append(category.get("id"))
+        if category.get("id") not in category_id_list:
+            category_info.append({
+                "id": category.get("id"),
+                "name": category.get("name"),
+                "image_url": category.get("image"),
+                "url": category.get("slug"),
+                "created_at": category.get("createdAt"),
+                "updated_at": category.get("updatedAt"),
+                "updated_by": category.get("updatedBy")
+            })
+            category_id_list.append(category.get("id"))
 
-        recursively_extract_subcategories(category, category_info, category_id_list)
+            recursively_extract_subcategories(category, category_info, category_id_list)
 
     df = pd.DataFrame(category_info)
     df.to_csv(defs.CATEGORY_FILE_FINAL_CSV, index=False)
