@@ -3,13 +3,13 @@ from pathlib import Path
 import pandas as pd
 
 def read_category_final():
-    df_categories = pd.read_csv(defs.CATEGORY_FILE_FINAL_CSV)
+    df_categories = pd.read_csv(defs.CATEGORY_FILE_FINAL_CSV, keep_default_na=False)
     return df_categories['url'].tolist()
 
 
 def drop_duplicates():
-    df_product = pd.read_csv(defs.PRODUCT_FILE_DUPLICATES_CSV)
-    df_brand = pd.read_csv(defs.BRAND_FILE_DUPLICATES_CSV)
+    df_product = pd.read_csv(defs.PRODUCT_FILE_DUPLICATES_CSV, keep_default_na=False)
+    df_brand = pd.read_csv(defs.BRAND_FILE_DUPLICATES_CSV, keep_default_na=False)
 
     df_product = df_product.drop_duplicates(subset="id")
     df_brand = df_brand.drop_duplicates(subset="id")
@@ -19,7 +19,7 @@ def drop_duplicates():
 
 def generate_country_mappings():
     # create country csv
-    df_product = pd.read_csv(defs.PRODUCT_FILE_FINAL_CSV)
+    df_product = pd.read_csv(defs.PRODUCT_FILE_FINAL_CSV, keep_default_na=False)
     countries = df_product["country"].unique()
 
     df_country = pd.DataFrame(countries, columns=["country"])

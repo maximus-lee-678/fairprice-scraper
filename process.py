@@ -23,8 +23,8 @@ def get_all_categories(category_dict):
                     "image_url": category.get("image"),
                     "url": category.get("slug"),
                     "created_at": category.get("createdAt"),
-                    "updated_at": category.get("updatedAt"),
-                    "updated_by": category.get("updatedBy")
+                    "modified_at": category.get("updatedAt"),
+                    "modified_by": category.get("updatedBy")
                 })
                 category_id_list.append(category.get("id"))
 
@@ -43,8 +43,8 @@ def get_all_categories(category_dict):
                 "image_url": category.get("image"),
                 "url": category.get("slug"),
                 "created_at": category.get("createdAt"),
-                "updated_at": category.get("updatedAt"),
-                "updated_by": category.get("updatedBy")
+                "modified_at": category.get("updatedAt"),
+                "modified_by": category.get("updatedBy")
             })
             category_id_list.append(category.get("id"))
 
@@ -190,8 +190,8 @@ def get_products_brands_from_one_category_slug(thread_id, category_slug, lock):
                 "image_url": product.get("images")[0] if product.get("images") else None,
                 "id_brand": brand_id,
                 "id_category_primary": product.get("primaryCategory").get("id"),
-                "id_category_parent_major": str(parent_categories_asc[1]) if len(parent_categories_asc) == 2 else str(parent_categories_asc[0]),
-                "id_category_parent_minor": str(parent_categories_asc[0]) if len(parent_categories_asc) == 2 else None,
+                "id_category_parent_major": int(parent_categories_asc[1]) if len(parent_categories_asc) == 2 else int(parent_categories_asc[0]),
+                "id_category_parent_minor": int(parent_categories_asc[0]) if len(parent_categories_asc) == 2 else None,
                 "id_category_secondary": ",".join([str(id) for id in product.get("secondaryCategoryIds")]) if product.get("secondaryCategoryIds") else None,
                 "country": product.get("metaData").get("Country of Origin"),
                 # reviews can be null
