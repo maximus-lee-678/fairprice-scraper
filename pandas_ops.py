@@ -29,12 +29,12 @@ def generate_country_mappings():
     df_country.to_csv(defs.COUNTRY_FILE_FINAL_CSV, index=False)
 
     # rename column and insert at old position
-    df_country_id_named = df_country.rename(columns={"id": "country_id"})
+    df_id_country_named = df_country.rename(columns={"id": "id_country"})
 
-    df_product = df_product.merge(df_country_id_named, how='left', on="country")
+    df_product = df_product.merge(df_id_country_named, how='left', on="country")
     product_columns = list(df_product.columns)
     country_column_index = product_columns.index("country")
-    product_columns.insert(country_column_index + 1, product_columns.pop(product_columns.index("country_id")))  # add after country then remove og
+    product_columns.insert(country_column_index + 1, product_columns.pop(product_columns.index("id_country")))  # add after country then remove og
     df_product = df_product[product_columns]
     df_product = df_product.drop(columns=["country"])
 
